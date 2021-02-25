@@ -1,4 +1,6 @@
 import './App.css';
+import React, {useEffect, useState} from 'react'
+
 
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import Chat from './components/Chat'
@@ -6,27 +8,42 @@ import Login from './components/Login'
 import styled from 'styled-components'
 import Header from './components/Header'
 import Sidebar from './components/Sidebar';
-import ContentHeader from './components/ContentHeader';
+
+import db from './firebase'
+
 
 function App() {
+  const [rooms, setRooms] = useState([]);
+
+  const getChannels = () => {
+    db.collection('rooms').onSnapshot((snapshot) => {
+      setRooms(
+        snapshot.docs.map((doc) => ({ id: doc.id, name: doc.data().name }))
+      )})
+  }
+
+  useEffect(() => {
+    getChannels();
+  }, [])
+
+
   return (
     <div className="App">
       <Router>
         <Container>
           <Header />
           <Main>
-            <Sidebar />
+            <Sidebar rooms={rooms} />
             <ContentHolder>
-              <ContentHeader />
               <ContentArea>
                 <Switch>
                   <Route path="/room">
                     <Chat />
                   </Route>
                   <Route path="/">
-                    <Login />
+                    <Chat />
                   </Route>
-                </Switch> 
+                </Switch>
               </ContentArea>
             </ContentHolder>
           </Main>
@@ -58,7 +75,7 @@ const ContentHolder = styled.div`
   grid-template-rows: 60px auto;
 `
 const ContentArea = styled.div`
-  padding: 20px;
+  /* padding: 20px;
   height: calc(100vh - 100px);
-  overflow-y: scroll;
+  overflow-y: scroll; */
 `;
