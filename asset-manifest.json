@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/slack-clone/static/css/main.bba35d2b.chunk.css",
-    "main.js": "/slack-clone/static/js/main.08b6e217.chunk.js",
-    "main.js.map": "/slack-clone/static/js/main.08b6e217.chunk.js.map",
+    "main.js": "/slack-clone/static/js/main.bf2225b8.chunk.js",
+    "main.js.map": "/slack-clone/static/js/main.bf2225b8.chunk.js.map",
     "runtime-main.js": "/slack-clone/static/js/runtime-main.a496f63b.js",
     "runtime-main.js.map": "/slack-clone/static/js/runtime-main.a496f63b.js.map",
     "static/js/2.499991c4.chunk.js": "/slack-clone/static/js/2.499991c4.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.a496f63b.js",
     "static/js/2.499991c4.chunk.js",
     "static/css/main.bba35d2b.chunk.css",
-    "static/js/main.08b6e217.chunk.js"
+    "static/js/main.bf2225b8.chunk.js"
   ]
 }
