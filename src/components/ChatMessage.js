@@ -1,23 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function ChatMessage() {
+function ChatMessage({user, text, name, image, timestamp}) {
   return (
     <Container>
       <AvatarImg>
-        <img src="https://i.imgur.com/6VBx3io.png" alt=""></img>
+        <img src={image} alt="" />
       </AvatarImg>
       <MsgInfo>
         <Title>
-          <Name>Anup Tamang</Name>
-          <Time>2/23/2021 11:13:55 AM</Time>
+          <Name>{name}</Name>
+          <Time>{new Date(timestamp.toDate()).toLocaleString()}</Time>
         </Title>
-        <Message>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est obcaecati magni eveniet dicta quae rem a eos nisi repellat maxime? Doloribus cupiditate sunt ea quod ullam omnis saepe aspernatur quas?
-        </Message>
+        <Message>{text}</Message>
       </MsgInfo>
     </Container>
-  )
+  );
 }
 
 export default ChatMessage

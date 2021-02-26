@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
-function ContentHeader() {
+function ContentHeader({ channel }) {
   return (
     <ContentHeaderHolder>
       <HeaderInfo>
         <HeaderTitle>
-          <span>#clever</span> <StarBorderIcon />
+          <span># {channel && channel.name}</span> <StarBorderIcon />
         </HeaderTitle>
         <TopicInfo>Company-wide announcements and work-based matters</TopicInfo>
       </HeaderInfo>

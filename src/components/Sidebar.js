@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import db from '../firebase'
-
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components'
 import CreateIcon from '@material-ui/icons/Create'
 import { sidebarItems } from '../data/SidebarData';
@@ -32,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Sidebar(props) {
+  const history = useHistory();
+
   const [input, setInput] = useState('');
 
   //Modal scripts
@@ -53,6 +55,12 @@ function Sidebar(props) {
     })
     setInput('');
     setOpen(false);
+  }
+
+  const goToChannel = (id) => {        
+    if(id) {
+      history.push(`/room/${id}`)
+    }
   }
 
   return (
@@ -114,7 +122,7 @@ function Sidebar(props) {
         </NewChannelContainer>
         <ChannelsList>
           {props.rooms.map((room) => (
-            <Channel># {room.name}</Channel>
+            <Channel onClick={() => goToChannel(room.id)}># {room.name}</Channel>
           ))}
         </ChannelsList>
       </ChannelsContainer>
@@ -127,6 +135,8 @@ export default Sidebar
 const SidebarContainer = styled.div`
   background: #3f0e40;
   border-top: 1px solid rgb(82, 38, 83);
+  height: calc(100vh - 38px);
+  overflow-y: auto;
 `;
 
 const WorkSpaceContainer = styled.div`
@@ -193,6 +203,10 @@ const Channel = styled.div`
   padding: 5px 15px;
   transition: all 0.3s linear;
   cursor: pointer;
+
+  :last-child {
+    margin-bottom: 50px;
+  }
 
   :hover {
     background: #350d36;

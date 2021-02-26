@@ -1,22 +1,90 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import ContentHeader from './ContentHeader';
 import SendIcon from '@material-ui/icons/Send';
 import styled from 'styled-components'
 import ChatMessage from './ChatMessage'
 
-function Chat() {
+import { useParams } from 'react-router-dom';
+import db from '../firebase';
+import firebase from 'firebase'
+
+function Chat({user}) {
+  const [messages, setMessages] = useState([]);
+  const [channel, setChannel] = useState();
+  const [input, setInput] = useState('');
+
+  let { channelId } = useParams();
+
+  const getMessages = () => {
+    db.collection('rooms')
+      .doc(channelId)
+      .collection('messages')
+      .orderBy('timestamp', 'asc')
+      .onSnapshot((snapshot) => {
+        let messages = snapshot.docs.map((doc) => doc.data());
+        setMessages(messages);
+      });
+  };
+
+  const sendMessage = (text) => {
+    if(channelId) {
+      let payload = {
+        text: text,
+        timestamp: firebase.firestore.Timestamp.now(),
+        user: user.name,
+        userImage: user.photo
+      }
+
+      db.collection('rooms')
+        .doc(channelId)
+        .collection('messages')
+        .add(payload)
+    }
+  }  
+
+  const send = (e) => {
+    e.preventDefault()
+    sendMessage(input)
+    setInput('')
+  }
+  
+
+  const getChannel = () => {
+    db.collection('rooms')
+      .doc(channelId)
+      .onSnapshot((snapshot) => {
+        setChannel(snapshot.data());
+      });
+  };
+
+  useEffect(() => {
+    getMessages();
+    getChannel();
+  }, [channelId]);
+
   return (
     <ChatContainer>
-      <ContentHeader />
+      <ContentHeader channel={channel} />
       <MessageContainer>
-        <ChatMessage />
+        {messages.length > 0 &&
+          messages.map((message) => (
+            <ChatMessage
+              user={user}
+              name={message.user}
+              text={message.text}
+              image={message.userImage}
+              timestamp={message.timestamp}
+            />
+          ))}
       </MessageContainer>
       <InputMessageContainer>
         <InputArea>
-          <input placeholder="Message here" type="text"/>
-          <BtnSend>
-            <SendIcon />
-          </BtnSend>
+          <form>
+            <input value={input} onChange={e => setInput(e.target.value)} placeholder="Message here" type="text" />
+            <BtnSend type="submit" onClick={send}>
+              <SendIcon />
+            </BtnSend>
+        </form>
         </InputArea>
       </InputMessageContainer>
     </ChatContainer>
@@ -64,7 +132,7 @@ const InputArea = styled.div`
     outline: none;
   }
 `
-const BtnSend = styled.div`
+const BtnSend = styled.button`
   position: absolute;
   right: 4px;
   top: 4px;
@@ -78,6 +146,7 @@ const BtnSend = styled.div`
   justify-content: center;
   cursor: pointer;
   transition: 0.3s linear;
+  border: 0;
 
   :hover {
     opacity: 0.8;

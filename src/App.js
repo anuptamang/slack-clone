@@ -1,8 +1,6 @@
 import './App.css';
 import React, {useEffect, useState} from 'react'
-
-
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Link, NavLink } from 'react-router-dom'
 import Chat from './components/Chat'
 import Login from './components/Login'
 import styled from 'styled-components'
@@ -14,6 +12,7 @@ import db from './firebase'
 
 function App() {
   const [rooms, setRooms] = useState([]);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   const getChannels = () => {
     db.collection('rooms').onSnapshot((snapshot) => {
@@ -26,28 +25,36 @@ function App() {
     getChannels();
   }, [])
 
+  const logOut = () => {
+    setUser(null)
+    localStorage.removeItem('user');
+  }
 
   return (
     <div className="App">
       <Router>
-        <Container>
-          <Header />
-          <Main>
-            <Sidebar rooms={rooms} />
-            <ContentHolder>
-              <ContentArea>
-                <Switch>
-                  <Route path="/room">
-                    <Chat />
-                  </Route>
-                  <Route path="/">
-                    <Chat />
-                  </Route>
-                </Switch>
-              </ContentArea>
-            </ContentHolder>
-          </Main>
-        </Container>
+        {
+          !user ? 
+          <Login setUser={setUser} /> :
+          <Container>
+            <Header user={user} logOut={logOut} />
+            <Main>
+              <Sidebar rooms={rooms} />
+              <ContentHolder>
+                <ContentArea>
+                  <Switch>
+                    <Route path="/room/:channelId">
+                      <Chat user={user} />
+                    </Route>
+                    <Route path="/">
+                      Select or Create a channel
+                    </Route>
+                  </Switch>
+                </ContentArea>
+              </ContentHolder>
+            </Main>
+          </Container>
+        }
       </Router>
     </div>
   );
