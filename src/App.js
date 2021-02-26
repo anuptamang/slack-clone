@@ -1,16 +1,29 @@
 import './App.css';
 import React, {useEffect, useState} from 'react'
-import { BrowserRouter as Router, Switch, Route, Link, NavLink } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Chat from './components/Chat'
 import Login from './components/Login'
 import styled from 'styled-components'
 import Header from './components/Header'
 import Sidebar from './components/Sidebar';
 
+import { makeStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
+
 import db from './firebase'
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
 
 function App() {
+  const classes = useStyles();
+
   const [rooms, setRooms] = useState([]);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
@@ -33,9 +46,9 @@ function App() {
   return (
     <div className="App">
       <Router>
-        {
-          !user ? 
-          <Login setUser={setUser} /> :
+        {!user ? (
+          <Login setUser={setUser} />
+        ) : (
           <Container>
             <Header user={user} logOut={logOut} />
             <Main>
@@ -47,14 +60,14 @@ function App() {
                       <Chat user={user} />
                     </Route>
                     <Route path="/">
-                      Select or Create a channel
+                      <Alert severity="info">Select or Create a channel</Alert>
                     </Route>
                   </Switch>
                 </ContentArea>
               </ContentHolder>
             </Main>
           </Container>
-        }
+        )}
       </Router>
     </div>
   );

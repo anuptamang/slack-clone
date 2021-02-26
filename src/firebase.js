@@ -8,7 +8,7 @@ const firebaseApp = firebase.initializeApp({
   storageBucket: 'slack-app-2b40e.appspot.com',
   messagingSenderId: '421835385001',
   appId: '1:421835385001:web:466a133102a2ba1a4ce1b8',
-  measurementId: 'G-9F7H5CJNK2',
+  measurementId: 'G-9F7H5CJNK2'
 });
 
 const db = firebaseApp.firestore();

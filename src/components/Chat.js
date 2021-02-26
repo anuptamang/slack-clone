@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react'
+import firebase from 'firebase'
 import ContentHeader from './ContentHeader';
 import SendIcon from '@material-ui/icons/Send';
 import styled from 'styled-components'
 import ChatMessage from './ChatMessage'
 
 import { useParams } from 'react-router-dom';
+
 import db from '../firebase';
-import firebase from 'firebase'
 
 function Chat({user}) {
   const [messages, setMessages] = useState([]);

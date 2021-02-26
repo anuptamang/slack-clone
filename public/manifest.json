@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Slack Clone",
+  "name": "Create Slack Clone Sample",
   "icons": [
     {
       "src": "favicon.ico",
