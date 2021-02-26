@@ -1,4 +1,4 @@
-# LIVE DEMO: https://anuptamang.github.io/slack-clone/
+# LIVE DEMO: https://slack-app-2b40e.web.app/
 
 ## Technologies Used
 - React
